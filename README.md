@@ -2,13 +2,6 @@
 
 A fast, responsive static portfolio website showcasing my experience as an AI Software Engineer at Accenture.
 
-## 🚀 Quick Start
-
-1. Download the zip file and extract it
-2. Push to your GitHub repository
-3. Enable GitHub Pages in repository settings
-4. Your site will be live at: `https://[username].github.io/[repository-name]`
-
 ## 🌟 Features
 
 - **Mobile-First Responsive Design** - Works perfectly on all devices
