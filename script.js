@@ -278,6 +278,33 @@ function initAnimations() {
     
     // Typing effect for hero subtitle (optional enhancement)
     initTypingEffect();
+
+    // enable interactive tilt and stagger
+    enableCardTilt();
+}
+
+// simple tilt effect on mouse move
+function enableCardTilt() {
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.classList.add('interactive');
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; // x position within the element
+            const y = e.clientY - rect.top;  // y position within the element
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const dx = (x - cx) / cx;
+            const dy = (y - cy) / cy;
+            const tiltX = (dy * 6).toFixed(2);
+            const tiltY = (dx * -6).toFixed(2);
+            const inner = card.querySelector('.project-content') || card;
+            inner.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(8px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            const inner = card.querySelector('.project-content') || card;
+            inner.style.transform = '';
+        });
+    });
 }
 
 // Add animation styles dynamically
@@ -344,6 +371,26 @@ function updateCurrentYear() {
         yearElement.textContent = new Date().getFullYear();
     }
 }
+
+// Replace broken project images with placeholder header (initials)
+function normalizeProjectImages() {
+    document.querySelectorAll('.project-card').forEach(card => {
+        const img = card.querySelector('img.project-image');
+        if (img) {
+            img.addEventListener('error', () => {
+                // if image fails to load, replace with placeholder div
+                const initials = img.alt ? img.alt.split(' ').slice(0,2).map(w => w.charAt(0)).join('') : '';
+                const placeholder = document.createElement('div');
+                placeholder.className = 'project-image placeholder';
+                placeholder.textContent = initials || 'PRJ';
+                img.replaceWith(placeholder);
+            });
+        }
+    });
+}
+
+// call image normalization after DOM ready
+document.addEventListener('DOMContentLoaded', normalizeProjectImages);
 
 // Utility function to debounce scroll events
 function debounce(func, wait) {
